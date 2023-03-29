@@ -6,6 +6,28 @@ secret rotation temporary disabled
 ```hcl
 module "secrets" {
   source  = "zahornyak/multiple-secrets/aws"
+  version = "0.0.3"
+
+  secrets = {
+    my_secret = {
+      name                    = "my_secret_name"
+      recovery_window_in_days = 10
+      secret_string = "example"
+    }
+    your_secret = {
+      name                    = "your_secret_name"
+      recovery_window_in_days = 10
+      secret_binary = "sha sjhgdhkajwndask"
+    }
+  }
+}
+```
+
+### unlocked secrets
+
+```hcl
+module "secrets" {
+  source  = "zahornyak/multiple-secrets/aws"
   version = "0.0.2"
 
   secrets = {
@@ -20,6 +42,9 @@ module "secrets" {
       secret_binary = "sha sjhgdhkajwndask"
     }
   }
+
+  # Terraform wont change secret string and binary value
+  unlocked = true
 }
 ```
 
