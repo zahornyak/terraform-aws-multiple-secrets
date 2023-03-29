@@ -1,0 +1,18 @@
+.envrc
+
+# Editors
+**/.vs
+**/.vscode/*
+**/.idea
+**/.editorconfig
+
+# Terraform assets
+*terraform.*.tfstate*
+.gen
+.terraform
+**/.terraform
+**/.terraform.lock.hcl
+**/provider.tf
+**/testing/*
+
+**/*.sh
