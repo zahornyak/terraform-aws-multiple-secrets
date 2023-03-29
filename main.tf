@@ -1,6 +1,6 @@
 resource "aws_secretsmanager_secret" "this" {
-  for_each                = var.secrets
-  name                    = lookup(each.value, "name") == null ? each.key : lookup(each.value, "name")
+  for_each = var.secrets
+  name     = lookup(each.value, "name") == null ? each.key : lookup(each.value, "name")
   # name_prefix             = lookup(each.value, "name_prefix", null) != null ? lookup(each.value, "name_prefix") : null
   description             = lookup(each.value, "description", null)
   kms_key_id              = lookup(each.value, "kms_key_id", null)
@@ -11,7 +11,7 @@ resource "aws_secretsmanager_secret" "this" {
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  for_each      = { for k, v in var.secrets : k => v if !var.unmanaged }
+  for_each      = { for k, v in var.secrets : k => v if !var.unlocked }
   secret_id     = lookup(each.value, "name")
   secret_string = lookup(each.value, "secret_string", null) != null ? lookup(each.value, "secret_string", null) : (lookup(each.value, "secret_key_value", null) != null ? jsonencode(lookup(each.value, "secret_key_value", {})) : null)
   secret_binary = lookup(each.value, "secret_binary", null) != null ? base64encode(lookup(each.value, "secret_binary")) : null
@@ -23,18 +23,18 @@ resource "aws_secretsmanager_secret_version" "this" {
   }
 }
 
-# resource "aws_secretsmanager_secret_version" "this-svu" {
-#   for_each      = { for k, v in var.secrets : k => v if var.unmanaged }
-#   secret_id     = each.key
-#   secret_string = lookup(each.value, "secret_string", null) != null ? lookup(each.value, "secret_string") : (lookup(each.value, "secret_key_value", null) != null ? jsonencode(lookup(each.value, "secret_key_value", {})) : null)
-#   secret_binary = lookup(each.value, "secret_binary", null) != null ? base64encode(lookup(each.value, "secret_binary")) : null
-#   depends_on    = [aws_secretsmanager_secret.this]
+resource "aws_secretsmanager_secret_version" "this_unlocked" {
+  for_each      = { for k, v in var.secrets : k => v if var.unlocked }
+  secret_id     = lookup(each.value, "name")
+  secret_string = lookup(each.value, "secret_string", null) != null ? lookup(each.value, "secret_string") : (lookup(each.value, "secret_key_value", null) != null ? jsonencode(lookup(each.value, "secret_key_value", {})) : null)
+  secret_binary = lookup(each.value, "secret_binary", null) != null ? base64encode(lookup(each.value, "secret_binary")) : null
+  depends_on    = [aws_secretsmanager_secret.this]
 
-#   lifecycle {
-#     ignore_changes = [
-#       secret_string,
-#       secret_binary,
-#       secret_id,
-#     ]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [
+      secret_string,
+      secret_binary,
+      secret_id,
+    ]
+  }
+}

@@ -16,8 +16,8 @@ variable "tags" {
   default     = {}
 }
 
-variable "unmanaged" {
-  description = "Terraform must ignore secrets lifecycle. Using this option you can initialize the secrets and rotate them outside Terraform, thus, avoiding other users to change or rotate the secrets by subsequent runs of Terraform"
+variable "unlocked" {
+  description = "if true - sets the ignore lifecycle policy and disable terraform managing the version of the resource"
   type        = bool
   default     = false
 }
