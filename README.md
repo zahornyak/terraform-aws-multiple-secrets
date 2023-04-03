@@ -19,6 +19,11 @@ module "secrets" {
       recovery_window_in_days = 10
       secret_binary = "sha sjhgdhkajwndask"
     }
+    foo = {
+      name = "bar"
+      recovery_window_in_days = 0
+      secret_string = "foo-bar"
+    }
   }
 }
 ```
