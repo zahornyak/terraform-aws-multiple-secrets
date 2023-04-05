@@ -1,4 +1,7 @@
 # AWS Secrets manager multiple secrets creation
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zahornyak/terraform-aws-multiple-secrets)
+
+
 secret rotation temporary disabled
 
 ## Usage
