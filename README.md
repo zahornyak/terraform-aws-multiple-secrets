@@ -1,6 +1,8 @@
 # AWS Secrets manager multiple secrets creation
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zahornyak/terraform-aws-multiple-secrets)
 
+Terraform module that allows for the creation of multiple secrets and significantly simplifies the process of creating them.
+Especially comfortable with Terragrunt.
 
 secret rotation temporary disabled
 
