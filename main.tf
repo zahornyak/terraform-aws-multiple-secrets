@@ -1,6 +1,6 @@
 resource "aws_secretsmanager_secret" "this" {
   for_each = var.secrets
-  name     = lookup(each.value, "name") == null ? each.key : lookup(each.value, "name")
+  name     = lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
   # name_prefix             = lookup(each.value, "name_prefix", null) != null ? lookup(each.value, "name_prefix") : null
   description             = lookup(each.value, "description", null)
   kms_key_id              = lookup(each.value, "kms_key_id", null)
