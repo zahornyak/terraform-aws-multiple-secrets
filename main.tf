@@ -11,7 +11,7 @@ resource "aws_secretsmanager_secret" "this" {
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  for_each      = { for k, v in var.secrets : k => v if !var.unlocked }
+  for_each      = { for k, v in var.secrets : k => v if !var.unlocked && try(v.unlocked, false) == false }
   secret_id     = lookup(each.value, "name")
   secret_string = lookup(each.value, "secret_string", null) != null ? lookup(each.value, "secret_string", null) : (lookup(each.value, "secret_key_value", null) != null ? jsonencode(lookup(each.value, "secret_key_value", {})) : null)
   secret_binary = lookup(each.value, "secret_binary", null) != null ? base64encode(lookup(each.value, "secret_binary")) : null
@@ -24,7 +24,7 @@ resource "aws_secretsmanager_secret_version" "this" {
 }
 
 resource "aws_secretsmanager_secret_version" "this_unlocked" {
-  for_each      = { for k, v in var.secrets : k => v if var.unlocked }
+  for_each      = { for k, v in var.secrets : k => v if var.unlocked || try(v.unlocked, false) == true }
   secret_id     = lookup(each.value, "name")
   secret_string = lookup(each.value, "secret_string", null) != null ? lookup(each.value, "secret_string") : (lookup(each.value, "secret_key_value", null) != null ? jsonencode(lookup(each.value, "secret_key_value", {})) : null)
   secret_binary = lookup(each.value, "secret_binary", null) != null ? base64encode(lookup(each.value, "secret_binary")) : null

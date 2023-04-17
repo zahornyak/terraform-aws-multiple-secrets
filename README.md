@@ -11,50 +11,71 @@ secret rotation temporary disabled
 ```hcl
 module "secrets" {
   source  = "zahornyak/multiple-secrets/aws"
-  version = "0.0.3"
 
   secrets = {
     my_secret = {
       name                    = "my_secret_name"
       recovery_window_in_days = 10
-      secret_string = "example"
+      secret_string           = "example"
     }
     your_secret = {
       name                    = "your_secret_name"
       recovery_window_in_days = 10
-      secret_binary = "sha sjhgdhkajwndask"
+      secret_binary           = "sha sjhgdhkajwndask"
     }
     foo = {
-      name = "bar"
+      name                    = "bar"
       recovery_window_in_days = 0
-      secret_string = "foo-bar"
+      secret_string           = "foo-bar"
     }
   }
 }
 ```
 
-### unlocked secrets
+### Unlocked secrets
 
 ```hcl
 module "secrets" {
   source  = "zahornyak/multiple-secrets/aws"
-  version = "0.0.3"
 
   secrets = {
     my_secret = {
       name                    = "my_secret_name"
       recovery_window_in_days = 10
-      secret_string = "example"
+      secret_string           = "example"
     }
     your_secret = {
       name                    = "your_secret_name"
       recovery_window_in_days = 10
-      secret_binary = "sha sjhgdhkajwndask"
+      secret_binary           = "sha sjhgdhkajwndask"
     }
   }
 
   # Terraform wont change secret string and binary value
   unlocked = true
+}
+```
+
+
+### Dynamically unlocked secrets
+
+```hcl
+module "secrets" {
+  source  = "zahornyak/multiple-secrets/aws"
+
+  secrets = {
+    my_secret = {
+      name                    = "my_secret_name"
+      recovery_window_in_days = 10
+      secret_string           = "example"
+    }
+    your_secret = {
+      name                    = "your_secret_name"
+      recovery_window_in_days = 10
+      secret_binary           = "sha sjhgdhkajwndask"
+      unlocked                = true   # Terraform wont change secret string and binary value for only that secret
+    }
+  }
 }
 ```
 
