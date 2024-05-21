@@ -1,5 +1,7 @@
 .envrc
 
+.DS_Store
+
 # Editors
 **/.vs
 **/.vscode/*
